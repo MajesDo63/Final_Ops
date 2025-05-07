@@ -25,6 +25,7 @@ https://docs.google.com/document/d/1Rpd2Hl8vlGI73LOc9XXjwX6jB2vk9RR9SaC7g_SFyIQ/
 - Alan Mauricio Rivera Garza
 - Nicolás Olvera Aparicio
 - César Eduardo Valdez Pinto
+- Axel Ivan Isaak de la paz
 
 <p align="center">
     <img src="https://media.giphy.com/media/jpVnC65DmYeyRL4LHS/giphy.gif" width="20%">
