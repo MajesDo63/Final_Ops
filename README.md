@@ -1,4 +1,4 @@
-[![Dungeon Shelf Logo](https://ruta-de-tu-logo-aqui)](https://arjuncvinod.github.io)
+[![Dungeon Shelf Logo](https://i.imgur.com/hEK3RaP.jpeg)](https://arjuncvinod.github.io)
 
 <h1 align="center">
     Hola <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="35"> bienvenido a nuestra página de Dungeon Shelf
