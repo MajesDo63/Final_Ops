@@ -1,12 +1,23 @@
-// Carrusel
+//Carrusel
 let currentSlide = 0;
-const slides = document.querySelectorAll('.carousel img');
+const track = document.querySelector('.carousel-track');
+const slides = document.querySelectorAll('.carousel-img');
+const totalSlides = slides.length;
+
+function updateWidth() {
+    track.style.width = `${100 * totalSlides}%`;
+    slides.forEach(slide => {
+        slide.style.width = `${100 / totalSlides}%`;
+    });
+}
+
+updateWidth();
 
 setInterval(() => {
-slides[currentSlide].classList.remove('active');
-currentSlide = (currentSlide + 1) % slides.length;
-slides[currentSlide].classList.add('active');
-}, 3000);
+    currentSlide = (currentSlide + 1) % totalSlides;
+    track.style.transform = `translateX(-${(100 / totalSlides) * currentSlide}%)`;
+}, 5000);
+
 
 // Carrito
 let cart = JSON.parse(localStorage.getItem('cart')) || [];

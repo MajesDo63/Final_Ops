@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main">
+    <h1 class="section-title">Carrito de Compras 🛒</h1>
+    <div id="cart-items"></div>
+    <p id="total-price" class="price"></p>
+    <button class="empty-cart-btn" onclick="emptyCart()">Vaciar Carrito</button>
+    <br><br>
+    <a href="index.html" class="cart-link">← Seguir Comprando</a>
+</div>
+
+ <script>
+    const cartItems = document.getElementById('cart-items');
+    const totalPrice = document.getElementById('total-price');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+        cartItems.innerHTML = '';
+        let total = 0;
+        if (cart.length === 0) {
+            cartItems.innerHTML = "<p>No hay productos en el carrito.</p>";
+            totalPrice.innerText = "";
+         } else {
+            cart.forEach((item, index) => {
+                 const div = document.createElement('div');
+                 div.className = 'cart-item';
+                 div.innerHTML = `
+                    <span>${item.name} - $${item.price} MXN</span>
+                    <button class="remove-item-btn" onclick="removeItem(${index})">Eliminar</button>
+                `;
+                 cartItems.appendChild(div);
+                 total += item.price;
+            });
+            totalPrice.innerText = `Total: $${total} MXN`;
+        }
+     }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+         renderCart();
+    }
+
+    function emptyCart() {
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    renderCart();
+    </script>
+</body>
+</html>
