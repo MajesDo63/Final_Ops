@@ -211,3 +211,62 @@ button:hover {
 .empty-cart-btn:hover {
     background: #ef4444;
 }
+.form-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 40px;
+    background: #102116;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(126, 247, 157, 0.5);
+    color: #c1f7b4;
+    text-align: center;
+}
+
+.form-container h2 {
+    color: #7ef79d;
+    margin-bottom: 20px;
+}
+
+.form-container input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #2e4733;
+    border-radius: 5px;
+    background: #14291e;
+    color: #a5f3b4;
+}
+
+.form-container input::placeholder {
+    color: #a5f3b4;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background: #265432;
+    color: #d7ffd9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-container button:hover {
+    background: #3b7c4a;
+    color: #ffffff;
+}
+
+.form-container p {
+    margin-top: 15px;
+    color: #c1f7b4;
+}
+
+.form-container a {
+    color: #34d399;
+    text-decoration: none;
+}
+
+.form-container a:hover {
+    text-decoration: underline;
+}

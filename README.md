@@ -12,5 +12,25 @@ El index funciona bien, muestra la pagina web y se ve algo bien estructurada y h
 El resumen que puedo dar de los estilos es que estan bien hechos, los colores puestos en cada apartado correspondiente son correctos y hacen que la pagina tenga su estilo verdozo.
 - Scripts.js
 La funcion del carrusel no funciona de ninguna manera, no estan las imagenes cargadas o no las encuentra, ya con eso el carrusel no funciona, deberia cambiar de imagen por imagen cada cierto tiempo como tipo "slides" a como esta en el codigo, pero no funciona aun. El boton del carrito funciona al darle click, pero al momento de darle click, me manda un error a una pagina diciendo "NOT FOUND" el error 404 que te da cuando no se encuentra una pagina, y lo ultimo del codigo es que cuando la pagina termina de cargar, se actualice el contador mostrado en el carrito usando la cantidad de productos guardados en el "cart" y aunque refresques la pagina aun muestra el contador de productos, asi que podria decir que si funciona.
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
 #Dia 2 Función del carrusel y del carrito añadidos y funcionando
+
+__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+#Dia 3 Función de login y register, botón de pago y cerrar sesión
+
+- Register.html
+Se agrego un diseño sencillo para la pagina de registro, basado en nuestro logo pusimos un color verde fuerte en el fondo de la pagina, al igual en los botones y el color del texto tienen un color referente al logo. En los campos de nombre y contraseña es obligatorio llenarlos, porque en caso de no hacerlo aparecera un mensaje pidiendo ingresar los datos. Una vez completado el registro muestra un mensaje que dice "registro exitoso" y redirige al usuario a la pagina de inicio de sesión. Abajo de los campos se agrego un enlace que te lleva directo a la pagina de inicio de sesión en caso de ya tener una cuenta.
+
+- Login.html
+Para la pagina de inicio de sesión tambien se agregaron los colores tomando en cuenta el logo, sus campos tambien se requieren en caso de que falte alguno, funciona correctamente en cuanto el usuario termine de ingresar sus datos muestra el mensaje "inicio de sesión exitoso" redirigiendo a la pagina principal. Abajo tambien se encuentra un enlace que lleva directo a la pagina de registro en caso de no tener una cuenta. 
+
+- Index.html
+Se agrego un botón de cerrar sesión en el apartado de categorias que redirige al usuario a la pagina de inicio de sesión.
+
+- Cart.html
+Se agrego un botón de pago para hacer una simulación, cuando se hace click en ese botón muestra un mensaje "pago exitoso" y queda vacío el carrito.
+
+- Scripts.js
+Se añadieron algunas funciones tanto para el register como el login, para tener almacenado los datos del usuario, y por otro lado, se implemento la funcion del boton de pago del carrito y el boton de cerrar sesion en el index. Se movio el script del carrito que estaba en el html al archivo de "scripts.js" para una mejor organización.
