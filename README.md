@@ -15,7 +15,12 @@ La funcion del carrusel no funciona de ninguna manera, no estan las imagenes car
 __________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 #Dia 2 Función del carrusel y del carrito añadidos y funcionando
-
+- Index.html
+Se agrego ya la funcionalidad del carrusel que incluye un total de 5 imagenes deslizandose cada 5 segundos que pasa sin que el usuario tenga que interactuar con eso, no se logran ver cortes visibles ni deformaciones asi que puedo decir que el carrusel fue implementado correctamente.
+- Styles.css
+Aqui se ocupo hacer modificaciones para que las imagenes ocupen correctamente el espacio en el carrusel, asi para que no hayan parpadeos ni saltos o algun tipo de mal vista en las imagenes.
+- Scripts.js y Cart.html
+El resultado esperado es que el carrusel se mueva sin interaccion del usuario, que cambiaran cada 5 segundos y que las imagenes no desaparezcan o presenten un error, y el resultado fue bueno, nada de eso paso y todo luce bien, ademas se agregaron funcionalidades para que se muestre ahora si la pagina del carrito, para eso se creo el archivo llamato "cart.hrml" donde miestra un listado de productos que el usuario va seleccionando en la pagina principal y se van reflejando en el apartado de "ver carrito", tambien se agregaron 3 botones que son el de "eliminar" que elimina un producto que hayas añadido al carrito, otro que es "vaciar carrito" que hace que se borren todos los productos de la lista en tu carrito y por ultimo un boton que dice "seguir comprando" que te redirige a la pagina principal donde puedes seguir añadiendo mas productos, todos esos botones fueron probados y funcionan correctamente, ademas de que cada producto que vayas añadiendo se ve reflejado en la parte superior derecha en la pagina principal en la parte que dice "ver carrito" (Todas estas cosas se guardan de forma local por el momento (localStorage)).
 __________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 #Dia 3 Función de login y register, botón de pago y cerrar sesión
