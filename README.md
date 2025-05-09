@@ -35,7 +35,7 @@ Para la pagina de inicio de sesión tambien se agregaron los colores tomando en 
 Se agrego un botón de cerrar sesión en el apartado de categorias que redirige al usuario a la pagina de inicio de sesión.
 
 - Cart.html
-Se agrego un botón de pago para hacer una simulación, cuando se hace click en ese botón muestra un mensaje "pago exitoso" y queda vacío el carrito.
+Se agrego un botón de pago para hacer una simulación, cuando se hace click en ese botón muestra un mensaje "pago exitoso" y queda vacío el carrito. Se arreglo el problema que habia al momento de recargar la pagina donde desaparecia todos los productos que habian sido agregados en el carrito.
 
 - Scripts.js
 Se añadieron algunas funciones tanto para el register como el login, para tener almacenado los datos del usuario, y por otro lado, se implemento la funcion del boton de pago del carrito y el boton de cerrar sesion en el index. Se movio el script del carrito que estaba en el html al archivo de "scripts.js" para una mejor organización.
