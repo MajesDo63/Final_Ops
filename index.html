@@ -19,7 +19,7 @@
 </div>
 <div class="main">
 <div class="header">
-<h1 class="title"> Dungeon Shelf</h1>
+<h1 class="title">Dungeon Shelf</h1>
 <a href="cart.html" class="cart-link">Ver Carrito 🛒 (<span id="cart-count">0</span>)</a>
 </div>
 
@@ -32,55 +32,27 @@
         <div class="carousel-img" style="background-image: url('https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/main_element/public/media/image/2016/11/harry-potter-piedra-filosofal_0.jpg?itok=qX1FPL4r');"></div>
     </div>
 </div>
- 
+
 <h2 id="recomendados" class="section-title">Recomendados</h2>
-<div class="section recommended">
-<div class="product">
-<img src="imagenes/superman.jpg" alt="Comic Spiderman">
-<p class="product-title">Amazing Spider-Man #1</p>
-<p class="price">$120 MXN</p>
-<button onclick="addToCart('Amazing Spider-Man #1', 120)">Agregar al Carrito</button>
-</div>
-<div class="product">
-<img src="https://via.placeholder.com/150" alt="Comic Batman">
-<p class="product-title">Batman: Año Uno</p>
-<p class="price">$150 MXN</p>
-<button onclick="addToCart('Batman: Año Uno', 150)">Agregar al Carrito</button>
-</div>
-</div>
+<div class="section" id="recomendados-section"></div>
 
 <h2 id="comics" class="section-title">Comics</h2>
-<div class="section comics">
-<div class="product">
-<img src="https://via.placeholder.com/150" alt="Comic Avengers">
-<p class="product-title">Avengers #5</p>
-<p class="price">$140 MXN</p>
-<button onclick="addToCart('Avengers #5', 140)">Agregar al Carrito</button>
-</div>
-</div>
+<div class="section" id="comics-section"></div>
 
 <h2 id="mangas" class="section-title">Mangas</h2>
-<div class="section mangas">
-<div class="product">
-<img src="https://via.placeholder.com/150" alt="Manga Naruto">
-<p class="product-title">Naruto Vol. 1</p>
-<p class="price">$170 MXN</p>
-<button onclick="addToCart('Naruto Vol. 1', 170)">Agregar al Carrito</button>
-</div>
-</div>
+<div class="section" id="mangas-section"></div>
 
 <h2 id="novelas" class="section-title">Novelas</h2>
-<div class="section novelas">
-<div class="product">
-<img src="https://via.placeholder.com/150" alt="Novela Harry Potter">
-<p class="product-title">Harry Potter y la Piedra Filosofal</p>
-<p class="price">$200 MXN</p>
-<button onclick="addToCart('Harry Potter y la Piedra Filosofal', 200)">Agregar al Carrito</button>
-</div>
-</div>
+<div class="section" id="novelas-section"></div>
 
 </div>
 
 <script src="scripts.js"></script>
+<script>
+window.onload = () => {
+    loadIndexProducts();
+    updateCartCount();
+};
+</script>
 </body>
 </html>

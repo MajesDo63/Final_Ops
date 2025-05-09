@@ -34,3 +34,22 @@ Se agrego un botón de pago para hacer una simulación, cuando se hace click en 
 
 - Scripts.js
 Se añadieron algunas funciones tanto para el register como el login, para tener almacenado los datos del usuario, y por otro lado, se implemento la funcion del boton de pago del carrito y el boton de cerrar sesion en el index. Se movio el script del carrito que estaba en el html al archivo de "scripts.js" para una mejor organización.
+
+__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+#Dia 4 Panel de administrador, rol de admin, productos creados en index y acumulacion de productos
+
+- Admin.html 
+Se creo una pagina sencilla para la administracion de productos; permite crear, actualizar y eliminar productos. Para crear un producto es necesario un nombre, precio, cantidad y una categoria; recomendados, comics, novelas o mangas. Al crear un producto se vera reflejado en el index, mostrando sus atributos y puesto en la categoria que se eligio.
+
+- Index.html
+Cuando se muestran los productos creados cada uno tiene el boton de agregar al carrito, si haces click en el boton se va disminuyendo la cantidad que se muestra en el producto.
+
+- Cart.html
+Ahora el mismo producto se ira acumulando dependiendo de la cantidad que agregas, puedes editar la cantidad deseada, si se agrega una cantidad que es superior a la que hay, mostrara un mensaje que diga "no hay productos".
+
+- Scripts.js
+Se agrego el rol de admin para poder tener los permisos de administrador, si en el login se pone el usuario y contraseña del admin lo redirige directamente a la pagina "admin.html". Tambien se agregaron nuevas funciones para la acumulacion y edicion de productos en el "cart.html", incluyendo el poder crear, actualizar y eliminar productos en el panel de administrador y que estuviera reflejado en el index.
+
+
+
