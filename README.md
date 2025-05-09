@@ -37,7 +37,7 @@ Se añadieron algunas funciones tanto para el register como el login, para tener
 
 __________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
-#Dia 4 Panel de administrador, rol de admin, productos creados en index y acumulacion de productos
+#Dia 4 Panel de administrador, rol de admin, productos reflejados en index y acumulacion de productos
 
 - Admin.html 
 Se creo una pagina sencilla para la administracion de productos; permite crear, actualizar y eliminar productos. Para crear un producto es necesario un nombre, precio, cantidad y una categoria; recomendados, comics, novelas o mangas. Al crear un producto se vera reflejado en el index, mostrando sus atributos y puesto en la categoria que se eligio.
