@@ -12,11 +12,16 @@ El index funciona bien, muestra la pagina web y se ve algo bien estructurada y h
 El resumen que puedo dar de los estilos es que estan bien hechos, los colores puestos en cada apartado correspondiente son correctos y hacen que la pagina tenga su estilo verdozo.
 - Scripts.js
 La funcion del carrusel no funciona de ninguna manera, no estan las imagenes cargadas o no las encuentra, ya con eso el carrusel no funciona, deberia cambiar de imagen por imagen cada cierto tiempo como tipo "slides" a como esta en el codigo, pero no funciona aun. El boton del carrito funciona al darle click, pero al momento de darle click, me manda un error a una pagina diciendo "NOT FOUND" el error 404 que te da cuando no se encuentra una pagina, y lo ultimo del codigo es que cuando la pagina termina de cargar, se actualice el contador mostrado en el carrito usando la cantidad de productos guardados en el "cart" y aunque refresques la pagina aun muestra el contador de productos, asi que podria decir que si funciona.
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________
 
 #Dia 2 Función del carrusel y del carrito añadidos y funcionando
-
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+- Index.html
+Se agrego ya la funcionalidad del carrusel que incluye un total de 5 imagenes deslizandose cada 5 segundos que pasa sin que el usuario tenga que interactuar con eso, no se logran ver cortes visibles ni deformaciones asi que puedo decir que el carrusel fue implementado correctamente.
+- Styles.css
+Aqui se ocupo hacer modificaciones para que las imagenes ocupen correctamente el espacio en el carrusel, asi para que no hayan parpadeos ni saltos o algun tipo de mal vista en las imagenes.
+- Scripts.js y Cart.html
+El resultado esperado es que el carrusel se mueva sin interaccion del usuario, que cambiaran cada 5 segundos y que las imagenes no desaparezcan o presenten un error, y el resultado fue bueno, nada de eso paso y todo luce bien, ademas se agregaron funcionalidades para que se muestre ahora si la pagina del carrito, para eso se creo el archivo llamato "cart.hrml" donde miestra un listado de productos que el usuario va seleccionando en la pagina principal y se van reflejando en el apartado de "ver carrito", tambien se agregaron 3 botones que son el de "eliminar" que elimina un producto que hayas añadido al carrito, otro que es "vaciar carrito" que hace que se borren todos los productos de la lista en tu carrito y por ultimo un boton que dice "seguir comprando" que te redirige a la pagina principal donde puedes seguir añadiendo mas productos, todos esos botones fueron probados y funcionan correctamente, ademas de que cada producto que vayas añadiendo se ve reflejado en la parte superior derecha en la pagina principal en la parte que dice "ver carrito" (Todas estas cosas se guardan de forma local por el momento (localStorage)).
+______________________________________________________________________________________________________
 
 #Dia 3 Función de login y register, botón de pago y cerrar sesión
 
@@ -34,22 +39,3 @@ Se agrego un botón de pago para hacer una simulación, cuando se hace click en 
 
 - Scripts.js
 Se añadieron algunas funciones tanto para el register como el login, para tener almacenado los datos del usuario, y por otro lado, se implemento la funcion del boton de pago del carrito y el boton de cerrar sesion en el index. Se movio el script del carrito que estaba en el html al archivo de "scripts.js" para una mejor organización.
-
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-
-#Dia 4 Panel de administrador, rol de admin, productos reflejados en index y acumulacion de productos
-
-- Admin.html 
-Se creo una pagina sencilla para la administracion de productos; permite crear, actualizar y eliminar productos. Para crear un producto es necesario un nombre, precio, cantidad y una categoria; recomendados, comics, novelas o mangas. Al crear un producto se vera reflejado en el index, mostrando sus atributos y puesto en la categoria que se eligio.
-
-- Index.html
-Cuando se muestran los productos creados cada uno tiene el boton de agregar al carrito, si haces click en el boton se va disminuyendo la cantidad que se muestra en el producto.
-
-- Cart.html
-Ahora el mismo producto se ira acumulando dependiendo de la cantidad que agregas, puedes editar la cantidad deseada, si se agrega una cantidad que es superior a la que hay, mostrara un mensaje que diga "no hay productos".
-
-- Scripts.js
-Se agrego el rol de admin para poder tener los permisos de administrador, si en el login se pone el usuario y contraseña del admin lo redirige directamente a la pagina "admin.html". Tambien se agregaron nuevas funciones para la acumulacion y edicion de productos en el "cart.html", incluyendo el poder crear, actualizar y eliminar productos en el panel de administrador y que estuviera reflejado en el index.
-
-
-
