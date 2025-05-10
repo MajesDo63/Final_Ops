@@ -1,16 +1,14 @@
 [![Dungeon Shelf Logo](https://i.imgur.com/hEK3RaP.jpeg)](https://arjuncvinod.github.io)
 
 <h1 align="center">
-    Hola <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="35"> bienvenido a nuestra página de Dungeon Shelf
+  Hola <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="35"> bienvenido a nuestra página de Dungeon Shelf
 </h1>
 
 <div align="center">
-    <img src="https://readme-typing-svg.herokuapp.com?color=%236FDA44&size=32&center=true&vCenter=true&width=600&height=50&lines=Web+Developer;Computer+Science+Student;Freelancer;Open-Source+Enthusiast" alt="Headline" />
+  <img src="https://readme-typing-svg.herokuapp.com?color=%236FDA44&size=32&center=true&vCenter=true&width=600&height=50&lines=Web+Developer;Computer+Science+Student;Freelancer;Open-Source+Enthusiast" alt="Headline" />
 </div>
 
 <img align="right" alt="Coding" width="400" src="https://octodex.github.com/images/daftpunktocat-guy.gif">
-
-<br>
 
 **Sobre nuestro proyecto**
 
@@ -25,8 +23,8 @@ https://docs.google.com/document/d/1Rpd2Hl8vlGI73LOc9XXjwX6jB2vk9RR9SaC7g_SFyIQ/
 - Alan Mauricio Rivera Garza
 - Nicolás Olvera Aparicio
 - César Eduardo Valdez Pinto
-- Axel Ivan Isaak de la paz
+- Axel Ivan Isaak de la paz
 
 <p align="center">
-    <img src="https://media.giphy.com/media/jpVnC65DmYeyRL4LHS/giphy.gif" width="20%">
+  <img src="https://media.giphy.com/media/jpVnC65DmYeyRL4LHS/giphy.gif" width="20%">
 </p>
