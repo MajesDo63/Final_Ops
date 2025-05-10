@@ -1,0 +1,9 @@
+resource "aws_launch_template" "web_lt" {
+  name_prefix   = "web-lt-"
+  image_id      = "ami-0c02fb55956c7d316"  # Amazon Linux 2 (us-east-1)
+  instance_type = "t2.micro"
+  key_name      = var.key_name
+
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups = [aws_security_group.web_sg.
