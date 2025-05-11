@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dungeon Shelf</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="sidebar">
+<h2>Categorías</h2>
+<ul>
+<li><a href="#recomendados">Recomendados</a></li>
+<li><a href="#comics">Comics</a></li>
+<li><a href="#mangas">Mangas</a></li>
+<li><a href="#novelas">Novelas</a></li>
+</ul>
+<button id="logout-btn">Cerrar sesión</button>
+</div>
+<div class="main">
+<div class="header">
+<h1 class="title">Dungeon Shelf</h1>
+<a href="cart.html" class="cart-link">Ver Carrito 🛒 (<span id="cart-count">0</span>)</a>
+</div>
+
+<div class="carousel">
+    <div class="carousel-track">
+        <div class="carousel-img" style="background-image: url('https://images.hdqwalls.com/wallpapers/the-amazing-spider-man-closeup-fk.jpg');"></div>
+        <div class="carousel-img" style="background-image: url('https://image.tmdb.org/t/p/original/gXfFMZJUDX9pYppoLO5svglK1wH.jpg');"></div>
+        <div class="carousel-img" style="background-image: url('https://wallpapers.com/images/featured/avengers-vm16xv4a69smdauy.jpg');"></div>
+        <div class="carousel-img" style="background-image: url('https://vignette.wikia.nocookie.net/naruto/images/d/dd/Naruto_Uzumaki!!.png/revision/latest/scale-to-width-down/2000?cb=20161013233552');"></div>
+        <div class="carousel-img" style="background-image: url('https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/main_element/public/media/image/2016/11/harry-potter-piedra-filosofal_0.jpg?itok=qX1FPL4r');"></div>
+    </div>
+</div>
+
+<h2 id="recomendados" class="section-title">Recomendados</h2>
+<div class="section" id="recomendados-section"></div>
+
+<h2 id="comics" class="section-title">Comics</h2>
+<div class="section" id="comics-section"></div>
+
+<h2 id="mangas" class="section-title">Mangas</h2>
+<div class="section" id="mangas-section"></div>
+
+<h2 id="novelas" class="section-title">Novelas</h2>
+<div class="section" id="novelas-section"></div>
+
+</div>
+
+<script src="scripts.js"></script>
+<script>
+window.onload = () => {
+    loadIndexProducts();
+    updateCartCount();
+};
+</script>
+</body>
+</html>

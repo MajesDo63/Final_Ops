@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main">
+    <h1 class="section-title">Carrito de Compras 🛒</h1>
+    <div id="cart-items"></div>
+    <p id="total-price" class="price"></p>
+    <button class="empty-cart-btn" onclick="emptyCart()">Vaciar Carrito</button>
+    <br><br>
+    <button class="pay-btn" onclick="simulatePayment()">Pagar</button>
+    <br><br>
+    <a href="index.html" class="cart-link">← Seguir Comprando</a>
+</div>
+<script src="scripts.js"></script>
+<script>
+    window.onload = renderCart;
+    </script>
+</body>
+</html>
