@@ -1,20 +1,6 @@
 # Aquí va toda la infraestructura: VPC, subredes, instancias, etc
 
-# Variables
-# CIDR para acceso SSH al bastión (reemplaza por tu IP/32)
-variable "bastion_allowed_cidr" {
-  description = "CIDR para acceso SSH al bastión"
-  type        = string
-  default     = "TU.IP.PUBLICA/32"
-}
-
 data "aws_availability_zones" "available" {}
-
-variable "key_name" {
-  description = "Nombre del key pair SSH"
-  type        = string
-  default     = "Proyecto"
-}
 
 # VPC principal
 resource "aws_vpc" "main" {

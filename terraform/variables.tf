@@ -26,3 +26,8 @@ variable "bastion_allowed_cidr" {
   default     = "18.207.96.251/32"
 }
 
+variable "key_name" {
+  description = "Nombre del key pair SSH"
+  type        = string
+  default     = "Proyecto"
+}
