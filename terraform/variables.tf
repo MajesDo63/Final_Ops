@@ -20,3 +20,9 @@ variable "private_db_subnets" {
   default     = ["10.0.4.0/24", "10.0.5.0/24"]
 }
 
+variable "bastion_allowed_cidr" {
+  description = "CIDR para acceso SSH al bastión"
+  type        = string
+  default     = "18.207.96.251/32"
+}
+

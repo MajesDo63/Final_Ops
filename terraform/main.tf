@@ -10,22 +10,6 @@ variable "bastion_allowed_cidr" {
 
 data "aws_availability_zones" "available" {}
 
-variable "vpc_cidr" {
-  type = string
-}
-
-variable "public_subnets" {
-  type = list(string)
-}
-
-variable "private_app_subnets" {
-  type = list(string)
-}
-
-variable "private_db_subnets" {
-  type = list(string)
-}
-
 variable "key_name" {
   description = "Nombre del key pair SSH"
   type        = string
