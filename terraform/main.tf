@@ -1,5 +1,13 @@
-#Aquí va toda la infraestructura: VPC, subredes, instancias, etc
-# main.tf
+# Aquí va toda la infraestructura: VPC, subredes, instancias, etc
+
+# Variables
+variable "key_name" {
+  description = "Nombre del key pair SSH"
+  type        = string
+  default     = "Proyecto"
+}
+
+# VPC principal
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
@@ -9,15 +17,16 @@ resource "aws_vpc" "main" {
     Name = "main-vpc"
   }
 }
-#obtener las zonas disponibles
+
+# Zonas de disponibilidad disponibles
 data "aws_availability_zones" "available" {}
 
-#Subredes publicas
+# Subredes públicas
 resource "aws_subnet" "public" {
-  count             = length(var.public_subnets)
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.public_subnets[count.index]
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  count                   = length(var.public_subnets)
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnets[count.index]
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
@@ -25,7 +34,7 @@ resource "aws_subnet" "public" {
   }
 }
 
-#Subredes privadas
+# Subredes privadas de aplicación
 resource "aws_subnet" "private_app" {
   count             = length(var.private_app_subnets)
   vpc_id            = aws_vpc.main.id
@@ -37,7 +46,7 @@ resource "aws_subnet" "private_app" {
   }
 }
 
-#Subred privada de la base de datos
+# Subredes privadas de base de datos
 resource "aws_subnet" "private_db" {
   count             = length(var.private_db_subnets)
   vpc_id            = aws_vpc.main.id
@@ -49,7 +58,7 @@ resource "aws_subnet" "private_db" {
   }
 }
 
-#Internet Gateway
+# Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -58,7 +67,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-#Tablas de enrutamientos publicas
+# Tabla de rutas pública
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
@@ -72,14 +81,14 @@ resource "aws_route_table" "public" {
   }
 }
 
-#Asociar las subredes publicas a las tablas de rutas
+# Asociaciones de subred pública
 resource "aws_route_table_association" "public" {
   count          = length(aws_subnet.public)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
-#SG WEB EC2 Publicas
+# Security Group para el frontend web (público)
 resource "aws_security_group" "web_sg" {
   name        = "web-sg"
   description = "Allow HTTP and SSH"
@@ -118,10 +127,36 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-#SG APP solo se accede desde web SG
+# Security Group para el bastion host (jump box)
+resource "aws_security_group" "bastion_sg" {
+  name        = "bastion-sg"
+  description = "Allow SSH only from my IP"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "SSH desde mi IP"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["TU.IP.PUBLICA/32"]  # Reemplaza con tu IP pública
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "bastion-sg"
+  }
+}
+
+# Security Group para la capa de aplicación (privada)
 resource "aws_security_group" "app_sg" {
   name        = "app-sg"
-  description = "Allow traffic from web layer"
+  description = "Allow traffic from web layer and bastion"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -130,11 +165,12 @@ resource "aws_security_group" "app_sg" {
     protocol        = "tcp"
     security_groups = [aws_security_group.web_sg.id]
   }
+
   ingress {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [aws_security_group.web_sg.id]
+    security_groups = [aws_security_group.bastion_sg.id]
   }
 
   egress {
@@ -149,7 +185,7 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
-#SG Base de datos solo accesible dede appSG
+# Security Group para la base de datos (privada)
 resource "aws_security_group" "db_sg" {
   name        = "db-sg"
   description = "Allow traffic from app layer"
@@ -174,36 +210,41 @@ resource "aws_security_group" "db_sg" {
   }
 }
 
-#llave pem para poder conectarse mediante ssh
-variable "key_name" {
-  default = "Proyecto"
-}
-
-#EC2 Publico wbe server
+# EC2: Servidor web público
 resource "aws_instance" "web_server" {
-  ami                         = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.public[0].id
-  vpc_security_group_ids      = [aws_security_group.web_sg.id]
-  key_name                    = var.key_name
-  
+  ami                    = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public[0].id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  key_name               = var.key_name
 
   tags = {
     Name = "Web-Server"
   }
 }
 
-#EC2 privada app server
+# EC2: Bastion host en subred pública
+resource "aws_instance" "bastion" {
+  ami                    = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public[0].id
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+  key_name               = var.key_name
+
+  tags = {
+    Name = "Bastion-Host"
+  }
+}
+
+# EC2: Servidor de aplicación privado
 resource "aws_instance" "app_server" {
-  ami                       = "ami-0f403e3180720dd7e" # Amazon Linux 2023
-  instance_type             = "t2.micro"
-  subnet_id                 = aws_subnet.private_app[0].id # <--- ¡Aquí está el cambio!
-  vpc_security_group_ids    = [aws_security_group.app_sg.id]
-  key_name                  = var.key_name
+  ami                    = "ami-0f403e3180720dd7e" # Amazon Linux 2023
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.private_app[0].id
+  vpc_security_group_ids = [aws_security_group.app_sg.id]
+  key_name               = var.key_name
 
   tags = {
     Name = "App-Server"
   }
 }
-
-#hdwfe
