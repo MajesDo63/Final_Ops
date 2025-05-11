@@ -1,6 +1,31 @@
 # Aquí va toda la infraestructura: VPC, subredes, instancias, etc
 
 # Variables
+# CIDR para acceso SSH al bastión (reemplaza por tu IP/32)
+variable "bastion_allowed_cidr" {
+  description = "CIDR para acceso SSH al bastión"
+  type        = string
+  default     = "TU.IP.PUBLICA/32"
+}
+
+data "aws_availability_zones" "available" {}
+
+variable "vpc_cidr" {
+  type = string
+}
+
+variable "public_subnets" {
+  type = list(string)
+}
+
+variable "private_app_subnets" {
+  type = list(string)
+}
+
+variable "private_db_subnets" {
+  type = list(string)
+}
+
 variable "key_name" {
   description = "Nombre del key pair SSH"
   type        = string
@@ -17,9 +42,6 @@ resource "aws_vpc" "main" {
     Name = "main-vpc"
   }
 }
-
-# Zonas de disponibilidad disponibles
-data "aws_availability_zones" "available" {}
 
 # Subredes públicas
 resource "aws_subnet" "public" {
@@ -91,7 +113,7 @@ resource "aws_route_table_association" "public" {
 # Security Group para el frontend web (público)
 resource "aws_security_group" "web_sg" {
   name        = "web-sg"
-  description = "Allow HTTP and SSH"
+  description = "Allow HTTP, HTTPS and SSH"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -130,15 +152,15 @@ resource "aws_security_group" "web_sg" {
 # Security Group para el bastion host (jump box)
 resource "aws_security_group" "bastion_sg" {
   name        = "bastion-sg"
-  description = "Allow SSH only from my IP"
+  description = "Allow SSH only from specified CIDR"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "SSH desde mi IP"
+    description = "SSH acceso desde CIDR definido"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["TU.IP.PUBLICA/32"]  # Reemplaza con tu IP pública
+    cidr_blocks = [var.bastion_allowed_cidr]
   }
 
   egress {
@@ -210,41 +232,43 @@ resource "aws_security_group" "db_sg" {
   }
 }
 
-# EC2: Servidor web público
+# EC2: Servidor web público (2 instancias)
 resource "aws_instance" "web_server" {
-  ami                    = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.public[0].id
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
-  key_name               = var.key_name
+  count                   = 2
+  ami                     = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
+  instance_type           = "t2.micro"
+  subnet_id               = aws_subnet.public[count.index].id
+  vpc_security_group_ids  = [aws_security_group.web_sg.id]
+  key_name                = var.key_name
 
   tags = {
-    Name = "Web-Server"
+    Name = "Web-Server-${count.index + 1}"
   }
 }
 
-# EC2: Bastion host en subred pública
+# EC2: Bastion host en subred pública (1 instancia)
 resource "aws_instance" "bastion" {
-  ami                    = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.public[0].id
-  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
-  key_name               = var.key_name
+  ami                     = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
+  instance_type           = "t2.micro"
+  subnet_id               = aws_subnet.public[0].id
+  vpc_security_group_ids  = [aws_security_group.bastion_sg.id]
+  key_name                = var.key_name
 
   tags = {
     Name = "Bastion-Host"
   }
 }
 
-# EC2: Servidor de aplicación privado
+# EC2: Servidor de aplicación privado (2 instancias)
 resource "aws_instance" "app_server" {
-  ami                    = "ami-0f403e3180720dd7e" # Amazon Linux 2023
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.private_app[0].id
-  vpc_security_group_ids = [aws_security_group.app_sg.id]
-  key_name               = var.key_name
+  count                   = 2
+  ami                     = "ami-0f403e3180720dd7e" # Amazon Linux 2023
+  instance_type           = "t2.micro"
+  subnet_id               = aws_subnet.private_app[count.index].id
+  vpc_security_group_ids  = [aws_security_group.app_sg.id]
+  key_name                = var.key_name
 
   tags = {
-    Name = "App-Server"
+    Name = "App-Server-${count.index + 1}"
   }
 }
