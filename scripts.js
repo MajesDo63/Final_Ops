@@ -115,35 +115,58 @@ window.loadAdminProducts = function() {
     products.forEach((p, index) => {
         const div = document.createElement('div');
         div.innerHTML = `
-            <input type="text" id="name-${index}" value="${p.name}">
-            <input type="number" id="price-${index}" value="${p.price}">
-            <input type="number" id="quantity-${index}" value="${p.quantity}">
-            <select id="category-${index}">
-                <option value="recomendados" ${p.category === 'recomendados' ? 'selected' : ''}>Recomendados</option>
-                <option value="mangas" ${p.category === 'mangas' ? 'selected' : ''}>Mangas</option>
-                <option value="comics" ${p.category === 'comics' ? 'selected' : ''}>Cómics</option>
-                <option value="novelas" ${p.category === 'novelas' ? 'selected' : ''}>Novelas</option>
-            </select>
-            <button onclick="updateProduct(${index})">Actualizar</button>
-            <button onclick="deleteProduct(${index})">Eliminar</button>
-        `;
+    <input type="text" id="name-${index}" value="${p.name}">
+    <input type="number" id="price-${index}" value="${p.price}">
+    <input type="number" id="quantity-${index}" value="${p.quantity}">
+    <select id="category-${index}">
+        <option value="recomendados" ${p.category === 'recomendados' ? 'selected' : ''}>Recomendados</option>
+        <option value="mangas" ${p.category === 'mangas' ? 'selected' : ''}>Mangas</option>
+        <option value="comics" ${p.category === 'comics' ? 'selected' : ''}>Cómics</option>
+        <option value="novelas" ${p.category === 'novelas' ? 'selected' : ''}>Novelas</option>
+    </select>
+    <input type="file" id="imageFile-${index}" accept="image/*">
+    <img class="admin-image" src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}">
+    <button onclick="updateProduct(${index})">Actualizar</button>
+    <button onclick="deleteProduct(${index})">Eliminar</button>
+`;
+
         container.appendChild(div);
+        document.getElementById(`imageFile-${index}`).addEventListener('change', function () {
+    this.classList.add('has-image');
+});
+
     });
 };
 
-
+//Se agrego para subir imagenes
 window.addProduct = function(event) {
     event.preventDefault();
     const name = document.getElementById('productName').value;
     const price = parseFloat(document.getElementById('productPrice').value);
     const quantity = parseInt(document.getElementById('productQuantity').value);
     const category = document.getElementById('productCategory').value;
+    const fileInput = document.getElementById('productImage');
+    const imageFile = fileInput.files[0];
 
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    products.push({ name, price, quantity, category });
-    localStorage.setItem('products', JSON.stringify(products));
-    loadAdminProducts();
+    if (!imageFile) {
+        alert('Debes seleccionar una imagen');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function() {
+        const imageBase64 = reader.result;
+
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        products.push({ name, price, category, quantity, image: imageBase64 });
+        localStorage.setItem('products', JSON.stringify(products));
+        loadAdminProducts();
+    };
+
+    reader.readAsDataURL(imageFile); // convierte a base64
 };
+
+
 
 
 window.updateProduct = function(index) {
@@ -152,11 +175,27 @@ window.updateProduct = function(index) {
     const price = parseFloat(document.getElementById(`price-${index}`).value);
     const quantity = parseInt(document.getElementById(`quantity-${index}`).value);
     const category = document.getElementById(`category-${index}`).value;
+    const imageInput = document.getElementById(`imageFile-${index}`);
+    let image = products[index].image;
 
-    products[index] = { name, price, quantity, category };
-    localStorage.setItem('products', JSON.stringify(products));
-    loadAdminProducts();
+    if (imageInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            image = reader.result;
+            products[index] = { name, price, quantity, category, image };
+            localStorage.setItem('products', JSON.stringify(products));
+            loadAdminProducts();
+            imageInput.value = ""; // limpia el input después de actualizar
+        };
+        reader.readAsDataURL(imageInput.files[0]);
+    } else {
+        products[index] = { name, price, quantity, category, image };
+        localStorage.setItem('products', JSON.stringify(products));
+        loadAdminProducts();
+    }
 };
+
+
 
 
 window.deleteProduct = function(index) {
@@ -171,19 +210,7 @@ window.logout = function() {
     window.location.href = 'login.html';
 };
 
-//Guardar productos con cantidad y categoria
-window.addProduct = function(event) {
-    event.preventDefault();
-    const name = document.getElementById('productName').value;
-    const price = parseFloat(document.getElementById('productPrice').value);
-    const quantity = parseInt(document.getElementById('productQuantity').value);
-    const category = document.getElementById('productCategory').value;
 
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    products.push({ name, price, category, quantity });
-    localStorage.setItem('products', JSON.stringify(products));
-    loadAdminProducts();
-};
 
 //Reflejar productos al index
 window.loadIndexProducts = function() {
@@ -201,7 +228,7 @@ window.loadIndexProducts = function() {
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-            <img src="https://via.placeholder.com/150" alt="${p.name}">
+            <img src="${p.image || 'https://via.placeholder.com/150'}" alt="${p.name}">
             <p class="product-title">${p.name}</p>
             <p class="price">$${p.price} MXN - Cantidad: ${p.quantity}</p>
             <button onclick="addToCart('${p.name}')">Agregar al Carrito</button>

@@ -274,3 +274,36 @@ button:hover {
 .form-container a:hover {
     text-decoration: underline;
 }
+
+input[type="file"].has-image::file-selector-button {
+    background: #34d399;
+    color: white;
+}
+
+input[type="file"].has-image {
+    color: transparent;
+}
+.admin-image {
+    display: block;
+    margin: 10px auto;
+    max-width: 100px;
+    max-height: 120px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #7ef79d;
+}
+input[type="file"] {
+    color: transparent;
+}
+
+input[type="file"]::file-selector-button {
+    color: white;
+    background: #265432;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #3b7c4a;
+}
