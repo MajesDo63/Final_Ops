@@ -17,7 +17,7 @@ Creamos una infraestructura que permite proporcionar una página web por medio d
 Incluye una página de registro, login y una página principal donde puedes ver un catálogo de productos; puedes agregar o quitar productos del carrito y editar la cantidad deseada.
 
 **Link documentación:**  
-https://docs.google.com/document/d/1Rpd2Hl8vlGI73LOc9XXjwX6jB2vk9RR9SaC7g_SFyIQ/edit?tab=t.0
+https://docs.google.com/document/d/10x-UJl7X-CvOVYMmUcLWsflT3JzjbFdRaSSMd-FJalM/edit?usp=sharing
 
 **Integrantes:**
 - Alan Mauricio Rivera Garza
