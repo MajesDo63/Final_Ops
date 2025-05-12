@@ -12,3 +12,8 @@ output "bastion_public_ip" {
   description = "IP pública del bastión"
   value       = aws_instance.bastion.public_ip
 }
+
+output  "app_server_private_ips" {
+  description = "IPs privadas de los servidores de aplicación"
+  value       = aws_instance.app_server[*].private_ip
+}
