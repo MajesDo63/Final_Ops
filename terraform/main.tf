@@ -36,18 +36,6 @@ resource "aws_subnet" "private_app" {
   }
 }
 
-# Subredes privadas de base de datos
-resource "aws_subnet" "private_db" {
-  count             = length(var.private_db_subnets)
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.private_db_subnets[count.index]
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-
-  tags = {
-    Name = "private-db-subnet-${count.index + 1}"
-  }
-}
-
 # Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
@@ -175,31 +163,6 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
-# Security Group para la base de datos (privada)
-resource "aws_security_group" "db_sg" {
-  name        = "db-sg"
-  description = "Allow traffic from app layer"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    from_port       = var.db_port
-    to_port         = var.db_port
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app_sg.id]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "db-sg"
-  }
-}
-
 # Bastion host (jump box)
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami
@@ -226,40 +189,5 @@ resource "aws_instance" "web_server" {
 
   tags = {
     Name = "web-server-${count.index + 1}"
-  }
-}
-
-# DB Subnet Group
-resource "aws_db_subnet_group" "db" {
-  name       = "${var.db_identifier}-subnet-group"
-  subnet_ids = aws_subnet.private_db[*].id
-
-  tags = {
-    Name = "${var.db_identifier}-subnet-group"
-  }
-}
-
-# RDS MySQL Instance
-resource "aws_db_instance" "app_db" {
-  identifier              = var.db_identifier
-  engine                  = var.db_engine
-  engine_version          = var.db_engine_version
-  instance_class          = var.db_instance_class
-  allocated_storage       = var.db_allocated_storage
-  storage_type            = var.db_storage_type
-  username                = var.db_username
-  password                = var.db_password
-  db_subnet_group_name    = aws_db_subnet_group.db.name
-  vpc_security_group_ids  = [aws_security_group.db_sg.id]
-  port                    = var.db_port
-  multi_az                = var.db_multi_az
-  publicly_accessible     = var.db_publicly_accessible
-  skip_final_snapshot     = var.db_skip_final_snapshot
-  backup_retention_period = var.backup_retention_period
-  backup_window           = var.preferred_backup_window
-  maintenance_window      = var.preferred_maintenance_window
-
-  tags = {
-    Name = var.db_identifier
   }
 }
