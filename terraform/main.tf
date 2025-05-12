@@ -232,7 +232,7 @@ resource "aws_instance" "web_server" {
 # DB Subnet Group
 resource "aws_db_subnet_group" "db" {
   name       = "${var.db_identifier}-subnet-group"
-  subnet_ids = var.private_db_subnets
+  subnet_ids = aws_subnet.private_db[*].id
 
   tags = {
     Name = "${var.db_identifier}-subnet-group"
