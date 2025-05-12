@@ -1,5 +1,3 @@
-# Aquí va toda la infraestructura: VPC, subredes, instancias, etc
-
 data "aws_availability_zones" "available" {}
 
 # VPC principal
@@ -184,8 +182,8 @@ resource "aws_security_group" "db_sg" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port       = 3306
-    to_port         = 3306
+    from_port       = var.db_port
+    to_port         = var.db_port
     protocol        = "tcp"
     security_groups = [aws_security_group.app_sg.id]
   }
@@ -202,43 +200,37 @@ resource "aws_security_group" "db_sg" {
   }
 }
 
-# EC2: Servidor web público (2 instancias)
-resource "aws_instance" "web_server" {
-  count                   = 2
-  ami                     = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
-  instance_type           = "t2.micro"
-  subnet_id               = aws_subnet.public[count.index].id
-  vpc_security_group_ids  = [aws_security_group.web_sg.id]
-  key_name                = var.key_name
+# DB Subnet Group
+resource "aws_db_subnet_group" "db" {
+  name       = "${var.db_identifier}-subnet-group"
+  subnet_ids = var.private_db_subnets
 
   tags = {
-    Name = "Web-Server-${count.index + 1}"
+    Name = "${var.db_identifier}-subnet-group"
   }
 }
 
-# EC2: Bastion host en subred pública (1 instancia)
-resource "aws_instance" "bastion" {
-  ami                     = "ami-0f403e3180720dd7e" # Amazon Linux 2023 (us-east-1)
-  instance_type           = "t2.micro"
-  subnet_id               = aws_subnet.public[0].id
-  vpc_security_group_ids  = [aws_security_group.bastion_sg.id]
-  key_name                = var.key_name
+# RDS MySQL Instance
+resource "aws_db_instance" "app_db" {
+  identifier              = var.db_identifier
+  engine                  = var.db_engine
+  engine_version          = var.db_engine_version
+  instance_class          = var.db_instance_class
+  allocated_storage       = var.db_allocated_storage
+  storage_type            = var.db_storage_type
+  username                = var.db_username
+  password                = var.db_password
+  db_subnet_group_name    = aws_db_subnet_group.db.name
+  vpc_security_group_ids  = [aws_security_group.db_sg.id]
+  port                    = var.db_port
+  multi_az                = var.db_multi_az
+  publicly_accessible     = var.db_publicly_accessible
+  skip_final_snapshot     = var.db_skip_final_snapshot
+  backup_retention_period = var.backup_retention_period
+  backup_window           = var.preferred_backup_window
+  maintenance_window      = var.preferred_maintenance_window
 
   tags = {
-    Name = "Bastion-Host"
-  }
-}
-
-# EC2: Servidor de aplicación privado (2 instancias)
-resource "aws_instance" "app_server" {
-  count                   = 2
-  ami                     = "ami-0f403e3180720dd7e" # Amazon Linux 2023
-  instance_type           = "t2.micro"
-  subnet_id               = aws_subnet.private_app[count.index].id
-  vpc_security_group_ids  = [aws_security_group.app_sg.id]
-  key_name                = var.key_name
-
-  tags = {
-    Name = "App-Server-${count.index + 1}"
+    Name = var.db_identifier
   }
 }
