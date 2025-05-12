@@ -28,3 +28,20 @@ https://docs.google.com/document/d/10x-UJl7X-CvOVYMmUcLWsflT3JzjbFdRaSSMd-FJalM/
 <p align="center">
   <img src="https://media.giphy.com/media/jpVnC65DmYeyRL4LHS/giphy.gif" width="20%">
 </p>
+
+______________________________________________________________________________________________________
+
+-Dia 6 Subir imagenes en el panel de administrador y reflejadas en el index
+
+- Admin.html
+Se agrego un espacio para poder subir imagenes al momento de estar creado un producto, una vez que agregas el producto se vera la imagen junto con los otros atributos.
+
+- Index.html
+En el index se vera reflejado la imagen del producto ya creado con el mismo formato de nombre, precio y cantidad del producto.
+
+- Scripts.js
+Se agregaron las funciones requeridas para subir una imagen desde el panel de administrador, para luego mostrarse en el index y algunos parametros para que estuviera en el mismo formato de como estaba anteriormente.
+
+- Styles.css
+Se ajusto la posicion de la imagen en el panel de administrador al momento de crear un producto.
+

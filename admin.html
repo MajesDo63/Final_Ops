@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Admin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="main">
+    <h1 class="section-title">Panel de Administrador</h1>
+
+    <form onsubmit="addProduct(event)">
+        <input id="productName" type="text" placeholder="Nombre del producto" required>
+        <input id="productPrice" type="number" placeholder="Precio" required>
+        <input id="productQuantity" type="number" placeholder="Cantidad" required>
+        <select id="productCategory" required>
+            <option value="recomendados">Recomendados</option>
+            <option value="mangas">Mangas</option>
+            <option value="comics">Cómics</option>
+            <option value="novelas">Novelas</option>
+        </select>
+        <input id="productImage" type="file" accept="image/*" required>
+        <button type="submit">Agregar producto</button>
+    </form>    
+    <div id="admin-products"></div>
+    <button onclick="logout()">Cerrar sesión</button>
+</div>
+<script src="scripts.js"></script>
+<script>
+protectAdminPage();
+</script>
+</body>
+</html>
