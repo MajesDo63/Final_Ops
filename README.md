@@ -56,4 +56,5 @@ Ahora el mismo producto se ira acumulando dependiendo de la cantidad que agregas
 
 - Scripts.js
 Se agrego el rol de admin para poder tener los permisos de administrador, si en el login se pone el usuario y contraseña del admin lo redirige directamente a la pagina "admin.html". Tambien se agregaron nuevas funciones para la acumulacion y edicion de productos en el "cart.html", incluyendo el poder crear, actualizar y eliminar productos en el panel de administrador y que estuviera reflejado en el index.
-
+#Dia 5 Todo el resto hecho en react, base de datos y más funciones a la página
+- Para resumir, pude realizar la conexión a la base de datos y al react de forma exitosa, con muchas pruebas realizadas y verificadas (vienen tanto en documentación y presentación) pudo funcionar bien todo eso, y las funciones nuevas a la página fueron subir imágenes desde el panel de administrador, se hicieron las pruebas y funciono, aunque aun podemos hacer algo más para el día 6
