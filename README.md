@@ -20,10 +20,10 @@ Incluye una página de registro, login y una página principal donde puedes ver 
 https://docs.google.com/document/d/10x-UJl7X-CvOVYMmUcLWsflT3JzjbFdRaSSMd-FJalM/edit?usp=sharing
 
 **Integrantes:**
-- Alan Mauricio Rivera Garza
-- Nicolás Olvera Aparicio
-- César Eduardo Valdez Pinto
-- Axel Ivan Isaak de la paz
+- Alan Mauricio Rivera Garza - Dev_Frontend
+- Nicolás Olvera Aparicio - Líder de infraestructura 
+- César Eduardo Valdez Pinto - Dev_Frontend, Dev_Backend y QA
+- Axel Ivan Isaak de la paz - Líder de infraestructura 
 
 <p align="center">
   <img src="https://media.giphy.com/media/jpVnC65DmYeyRL4LHS/giphy.gif" width="20%">
