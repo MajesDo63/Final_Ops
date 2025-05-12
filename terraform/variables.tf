@@ -55,3 +55,21 @@ variable "private_app_subnets" {
   type        = list(string)
   default     = ["10.0.2.0/24", "10.0.3.0/24"]
 }
+
+variable "app_server_count" {
+  description = "Número de instancias de aplicación"
+  type        = number
+  default     = 2
+}
+
+variable "app_server_ami" {
+  description = "AMI ID para los servidores de aplicación"
+  type        = string
+  default     = "ami-0f403e3180720dd7e"
+}
+
+variable "app_server_instance_type" {
+  description = "Tipo de instancia EC2 para los servidores de aplicación"
+  type        = string
+  default     = "t3.micro"
+}
