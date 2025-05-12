@@ -191,3 +191,17 @@ resource "aws_instance" "web_server" {
     Name = "web-server-${count.index + 1}"
   }
 }
+
+# App servers
+resource "aws_instance" "app_server" {
+  count                  = var.app_server_count
+  ami                    = var.web_server_ami
+  instance_type          = var.web_server_instance_type
+  subnet_id              = aws_subnet.private_app[count.index].id
+  key_name               = var.key_name
+  vpc_security_group_ids = [aws_security_group.app_sg.id]
+
+  tags = {
+    Name = "app-server-${count.index + 1}"
+  }
+}
