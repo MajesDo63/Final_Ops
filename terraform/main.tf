@@ -200,6 +200,35 @@ resource "aws_security_group" "db_sg" {
   }
 }
 
+# Bastion host (jump box)
+resource "aws_instance" "bastion" {
+  ami                         = var.bastion_ami
+  instance_type               = var.bastion_instance_type
+  subnet_id                   = aws_subnet.public[0].id
+  key_name                    = var.key_name
+  vpc_security_group_ids      = [aws_security_group.bastion_sg.id]
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "bastion-host"
+  }
+}
+
+# Servidores web
+resource "aws_instance" "web_server" {
+  count                       = var.web_server_count
+  ami                         = var.web_server_ami
+  instance_type               = var.web_server_instance_type
+  subnet_id                   = aws_subnet.public[count.index].id
+  key_name                    = var.key_name
+  vpc_security_group_ids      = [aws_security_group.web_sg.id]
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "web-server-${count.index + 1}"
+  }
+}
+
 # DB Subnet Group
 resource "aws_db_subnet_group" "db" {
   name       = "${var.db_identifier}-subnet-group"

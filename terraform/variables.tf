@@ -10,6 +10,34 @@ variable "key_name" {
   default     = "Proyecto"
 }
 
+variable "bastion_ami" {
+  description = "AMI ID del bastión"
+  type        = string
+}
+
+variable "bastion_instance_type" {
+  description = "Tipo de instancia EC2 para el bastión"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "web_server_ami" {
+  description = "AMI ID para los servidores web"
+  type        = string
+}
+
+variable "web_server_instance_type" {
+  description = "Tipo de instancia EC2 para los servidores web"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "web_server_count" {
+  description = "Número de instancias web"
+  type        = number
+  default     = 2
+}
+
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
