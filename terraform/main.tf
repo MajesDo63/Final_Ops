@@ -126,14 +126,6 @@ resource "aws_vpc_endpoint" "s3" {
   ]
 }
 
-resource "aws_vpc_endpoint" "cf" {
-  vpc_id            = aws_vpc.main.id
-  service_name      = "com.amazonaws.${var.aws_region}.cloudfront"
-  vpc_endpoint_type = "Interface"
-  subnet_ids        = aws_subnet.private_app[*].id
-  security_group_ids= [aws_security_group.app_sg.id]
-}
-
 ##########################################################
 # Security Groups
 ##########################################################
