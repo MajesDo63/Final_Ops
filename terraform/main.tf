@@ -1,6 +1,15 @@
+##########################################################
+# Provider y AZs disponibles
+##########################################################
+provider "aws" {
+  region = var.aws_region
+}
+
 data "aws_availability_zones" "available" {}
 
+##########################################################
 # VPC principal
+##########################################################
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
@@ -11,7 +20,9 @@ resource "aws_vpc" "main" {
   }
 }
 
+##########################################################
 # Subredes públicas
+##########################################################
 resource "aws_subnet" "public" {
   count                   = length(var.public_subnets)
   vpc_id                  = aws_vpc.main.id
@@ -24,7 +35,9 @@ resource "aws_subnet" "public" {
   }
 }
 
+##########################################################
 # Subredes privadas de aplicación
+##########################################################
 resource "aws_subnet" "private_app" {
   count             = length(var.private_app_subnets)
   vpc_id            = aws_vpc.main.id
@@ -36,7 +49,9 @@ resource "aws_subnet" "private_app" {
   }
 }
 
-# Internet Gateway
+##########################################################
+# Internet Gateway + NAT Gateway
+##########################################################
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -45,7 +60,24 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# Tabla de rutas pública
+resource "aws_eip" "nat" {
+  vpc = true
+  depends_on = [aws_internet_gateway.igw]
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public[0].id
+
+  tags = {
+    Name = "main-nat-gateway"
+  }
+}
+
+##########################################################
+# Route Tables y asociaciones
+##########################################################
+# Pública (salida directa a IGW)
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
@@ -59,14 +91,56 @@ resource "aws_route_table" "public" {
   }
 }
 
-# Asociaciones de subred pública
 resource "aws_route_table_association" "public" {
   count          = length(aws_subnet.public)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
-# Security Group para el frontend web (público)
+# Privada (salida a Internet vía NAT)
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
+  }
+
+  tags = {
+    Name = "private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  count          = length(aws_subnet.private_app)
+  subnet_id      = aws_subnet.private_app[count.index].id
+  route_table_id = aws_route_table.private.id
+}
+
+##########################################################
+# VPC Endpoints
+##########################################################
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [
+    aws_route_table.public.id,
+    aws_route_table.private.id,
+  ]
+}
+
+resource "aws_vpc_endpoint" "cf" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.aws_region}.cloudfront"
+  vpc_endpoint_type = "Interface"
+  subnet_ids        = aws_subnet.private_app[*].id
+  security_group_ids= [aws_security_group.app_sg.id]
+}
+
+##########################################################
+# Security Groups
+##########################################################
 resource "aws_security_group" "web_sg" {
   name        = "web-sg"
   description = "Allow HTTP, HTTPS and SSH"
@@ -78,14 +152,12 @@ resource "aws_security_group" "web_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
     from_port   = 22
     to_port     = 22
@@ -100,19 +172,15 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "web-sg"
-  }
+  tags = { Name = "web-sg" }
 }
 
-# Security Group para el bastion host (jump box)
 resource "aws_security_group" "bastion_sg" {
   name        = "bastion-sg"
   description = "Allow SSH only from specified CIDR"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "SSH acceso desde CIDR definido"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -126,12 +194,9 @@ resource "aws_security_group" "bastion_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "bastion-sg"
-  }
+  tags = { Name = "bastion-sg" }
 }
 
-# Security Group para la capa de aplicación (privada)
 resource "aws_security_group" "app_sg" {
   name        = "app-sg"
   description = "Allow traffic from web layer and bastion"
@@ -143,7 +208,6 @@ resource "aws_security_group" "app_sg" {
     protocol        = "tcp"
     security_groups = [aws_security_group.web_sg.id]
   }
-
   ingress {
     from_port       = 22
     to_port         = 22
@@ -158,12 +222,12 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "app-sg"
-  }
+  tags = { Name = "app-sg" }
 }
 
-# Bastion host (jump box)
+##########################################################
+# Instancias EC2
+##########################################################
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami
   instance_type               = var.bastion_instance_type
@@ -172,12 +236,9 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids      = [aws_security_group.bastion_sg.id]
   associate_public_ip_address = true
 
-  tags = {
-    Name = "bastion-host"
-  }
+  tags = { Name = "bastion-host" }
 }
 
-# Servidores web
 resource "aws_instance" "web_server" {
   count                       = var.web_server_count
   ami                         = var.web_server_ami
@@ -187,12 +248,9 @@ resource "aws_instance" "web_server" {
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = true
 
-  tags = {
-    Name = "web-server-${count.index + 1}"
-  }
+  tags = { Name = "web-server-${count.index + 1}" }
 }
 
-# App servers
 resource "aws_instance" "app_server" {
   count                       = var.app_server_count
   ami                         = var.app_server_ami

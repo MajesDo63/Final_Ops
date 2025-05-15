@@ -1,3 +1,9 @@
+variable "aws_region" {
+  description = "Región AWS donde desplegar todos los recursos"
+  type        = string
+  default     = "us-east-1"  # cámbiala si usas otra
+}
+
 variable "bastion_allowed_cidr" {
   description = "CIDR para acceso SSH al bastión"
   type        = string
